@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -72,6 +73,22 @@ namespace HomeworkTheme07ConsoleApp
             this.dateOfBirth = DateOfBirth;
             this.birthPlace = BirthPlace;
 
+        }
+
+        public Employee(int Id, string LastName, string FirstName, string Patronymic, byte Age, int Height,
+            DateTime DateOfBirth, string BirthPlace) :
+            this(Id, DateTime.Now, DateTime.Now, LastName, FirstName,Patronymic, Age, Height, DateOfBirth, BirthPlace)
+        {
+            
+        }
+        #endregion
+
+        #region Методы
+
+        public string Print()
+        {
+            return $"{Id,3} {RecordCreationDate.ToShortDateString(),15} {RecordCreationTime.ToShortTimeString(),15} {LastName,15} {FirstName,15}{Patronymic,15}" +
+                   $"{Age,5}{Height,10}{DateOfBirth.ToShortDateString(),20}{BirthPlace,15}";
         }
 
         #endregion
