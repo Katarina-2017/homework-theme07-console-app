@@ -55,5 +55,25 @@ namespace HomeworkTheme07ConsoleApp
         public string BirthPlace { get { return this.birthPlace; } set { this.birthPlace = value; } }
 
         #endregion
+
+        #region Конструкторы
+
+        public Employee(int Id, DateTime RecordCreationDate, DateTime RecordCreationTime, string LastName, string FirstName, string Patronymic, byte Age, int Height,
+            DateTime DateOfBirth, string BirthPlace)
+        {
+            this.id = Id;
+            this.recordCreationDate = RecordCreationDate;
+            this.recordCreationTime = RecordCreationTime;
+            this.lastName = LastName;
+            this.firstName = FirstName;
+            this.patronymic = Patronymic;
+            this.age = Age;
+            this.height = Height;
+            this.dateOfBirth = DateOfBirth;
+            this.birthPlace = BirthPlace;
+
+        }
+
+        #endregion
     }
 }
