@@ -15,13 +15,7 @@ namespace HomeworkTheme07ConsoleApp
 
         private DateTime recordCreationDate;
 
-        private DateTime recordCreationTime;
-
-        private string lastName;
-
-        private string firstName;
-
-        private string patronymic;
+        private string initialsEmployee;
 
         private byte age;
 
@@ -39,13 +33,7 @@ namespace HomeworkTheme07ConsoleApp
 
         public DateTime RecordCreationDate { get { return this.recordCreationDate; } set { this.recordCreationDate = value; } }
 
-        public DateTime RecordCreationTime { get { return this.recordCreationTime; } set { this.recordCreationTime = value; } }
-
-        public string LastName { get { return this.lastName; } set { this.lastName = value; } }
-
-        public string FirstName { get { return this.firstName; } set { this.firstName = value; } }
-
-        public string Patronymic { get { return this.patronymic; } set { this.patronymic = value; } }
+        public string InitialsEmployee { get { return this.initialsEmployee; } set { this.initialsEmployee = value; } }
 
         public byte Age { get { return this.age; } set { this.age = value; } }
 
@@ -59,15 +47,12 @@ namespace HomeworkTheme07ConsoleApp
 
         #region Конструкторы
 
-        public Employee(int Id, DateTime RecordCreationDate, DateTime RecordCreationTime, string LastName, string FirstName, string Patronymic, byte Age, int Height,
+        public Employee(int Id, DateTime RecordCreationDate, string InitialsEmployee, byte Age, int Height,
             DateTime DateOfBirth, string BirthPlace)
         {
             this.id = Id;
             this.recordCreationDate = RecordCreationDate;
-            this.recordCreationTime = RecordCreationTime;
-            this.lastName = LastName;
-            this.firstName = FirstName;
-            this.patronymic = Patronymic;
+            this.initialsEmployee = InitialsEmployee;
             this.age = Age;
             this.height = Height;
             this.dateOfBirth = DateOfBirth;
@@ -75,9 +60,9 @@ namespace HomeworkTheme07ConsoleApp
 
         }
 
-        public Employee(int Id, string LastName, string FirstName, string Patronymic, byte Age, int Height,
+        public Employee(int Id, string InitialsEmployee, byte Age, int Height,
             DateTime DateOfBirth, string BirthPlace) :
-            this(Id, DateTime.Now, DateTime.Now, LastName, FirstName,Patronymic, Age, Height, DateOfBirth, BirthPlace)
+            this(Id, DateTime.Now, InitialsEmployee, Age, Height, DateOfBirth, BirthPlace)
         {
             
         }
@@ -87,8 +72,9 @@ namespace HomeworkTheme07ConsoleApp
 
         public string Print()
         {
-            return $"{Id,3} {RecordCreationDate.ToShortDateString(),15} {RecordCreationTime.ToShortTimeString(),15} {LastName,15} {FirstName,15}{Patronymic,15}" +
-                   $"{Age,5}{Height,10}{DateOfBirth.ToShortDateString(),20}{BirthPlace,15}";
+            string createDate = RecordCreationDate.ToShortDateString() + " " + RecordCreationDate.ToShortTimeString();
+            
+            return $"{Id,4} {createDate,15} {InitialsEmployee,25} {Age,4} {Height,7} {DateOfBirth.ToShortDateString(),15} {BirthPlace,25}";
         }
 
         #endregion
