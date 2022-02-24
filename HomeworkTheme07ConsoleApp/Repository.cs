@@ -19,10 +19,10 @@ namespace HomeworkTheme07ConsoleApp
         {
             this.path = Path; // Сохранение пути к файлу с данными
             
-            this.index = 0; // инициализаия массива заголовков   
+            this.index = 0; // текущая позиция для добавления сотрудника в  employees 
             this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
-            //this.GetById(); // Загрузка данных
+            this.GetAll(); // Загрузка данных
         }
 
         /// <summary>
@@ -41,10 +41,11 @@ namespace HomeworkTheme07ConsoleApp
         /// Метод добавления сотрудника в хранилище
         /// </summary>
         /// <param name="concreteEmployee">Сотрудник</param>
-        public void Add(Employee concreteEmployee)
+        public void Add(Employee ConcreteEmployee)
         {
             this.Resize(index >= this.employees.Length);
-            this.employees[index] = concreteEmployee;
+            this.employees[index] = ConcreteEmployee;
+            this.index++;
         }
 
         private void GetAll()
@@ -58,7 +59,8 @@ namespace HomeworkTheme07ConsoleApp
                     {
                         string[] args = sr.ReadLine().Split('#');
 
-                        //Add(new Employee(args[0], args[1], args[2], Convert.ToUInt32(args[3]), args[4]));
+                        Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                            Convert.ToDateTime(args[5]),args[6]));
                     }
                 }
             }
@@ -70,7 +72,7 @@ namespace HomeworkTheme07ConsoleApp
 
         public void PrintDbToConsole()
         {
-            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",12}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",12}\t{"Место рождения"}");
+            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
             for (int i = 0; i < index; i++)
             {

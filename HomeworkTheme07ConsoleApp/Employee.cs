@@ -74,7 +74,7 @@ namespace HomeworkTheme07ConsoleApp
         {
             string createDate = RecordCreationDate.ToShortDateString() + " " + RecordCreationDate.ToShortTimeString();
             
-            return $"{Id,4} {createDate,15} {InitialsEmployee,25} {Age,4} {Height,7} {DateOfBirth.ToShortDateString(),15} {BirthPlace,25}";
+            return $"{Id,4} {createDate,22} {InitialsEmployee,29} {Age,10} {Height,9} {DateOfBirth.ToShortDateString(),15} {BirthPlace,25}";
         }
 
         #endregion
