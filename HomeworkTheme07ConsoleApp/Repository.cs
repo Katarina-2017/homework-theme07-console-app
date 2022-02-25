@@ -13,16 +13,33 @@ namespace HomeworkTheme07ConsoleApp
 
         private string path;
 
+        private byte option;
+
         int index; // текущий элемент для добавления в employees
 
-        public Repository(string Path)
+        public Repository(string Path, byte Option)
         {
             this.path = Path; // Сохранение пути к файлу с данными
             
             this.index = 0; // текущая позиция для добавления сотрудника в  employees 
+
+            this.option = Option;
+
             this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
-            this.GetAll(); // Загрузка данных
+            switch (option)
+            {
+                case 1:
+                    this.GetAll(); break; // Загрузка данных
+                case 2: break;
+                case 3: break;
+                case 4: break;
+                case 5: break;
+                default:
+                    Console.WriteLine("Вы ввели некорректное значение");
+                    break;
+            }
+            
         }
 
         /// <summary>

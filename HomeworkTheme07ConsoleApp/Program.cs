@@ -12,7 +12,17 @@ namespace HomeworkTheme07ConsoleApp
         {
             string path = @"db.txt";
 
-            Repository rep = new Repository(path);
+            Console.WriteLine($"Добро пожаловать в ежедневник. \nВыберите одну из следующих функций:" +
+                $"\n1 - Просмотр записи;" +
+                $"\n2 - Создание записи;" +
+                $"\n3 - Удаление записи;" +
+                $"\n4 - Редактирование записи;" +
+                $"\n5 - Загрузка записей в выбранном диапазоне дат;" +
+                $"\n6 - Сортировка по возрастанию и убыванию даты.");
+
+            byte userOption = Convert.ToByte(Console.ReadLine());
+
+            Repository rep = new Repository(path, userOption);
 
             rep.PrintDbToConsole();
 
