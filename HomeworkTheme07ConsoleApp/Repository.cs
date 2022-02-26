@@ -17,6 +17,19 @@ namespace HomeworkTheme07ConsoleApp
 
         int index; // текущий элемент для добавления в employees
 
+        public Repository(string Path)
+        {
+            this.path = Path; // Сохранение пути к файлу с данными
+
+            this.index = 0; // текущая позиция для добавления сотрудника в  employees 
+
+            this.idRecord = 0;
+
+            this.employees = new Employee[2]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
+
+            this.GetAll();
+        }
+
         public Repository(string Path, int IdRecord)
         {
             this.path = Path; // Сохранение пути к файлу с данными
@@ -25,7 +38,7 @@ namespace HomeworkTheme07ConsoleApp
 
             this.idRecord = IdRecord;
 
-            this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
+            this.employees = new Employee[2]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
             this.GetById(IdRecord);
         }
@@ -56,6 +69,7 @@ namespace HomeworkTheme07ConsoleApp
         private void GetAll()
         {
             FileInfo userFileName = new FileInfo(this.path);
+
             if (userFileName.Exists)    //если файл существует, то считываем из него информацию
             {
                 using (StreamReader sr = new StreamReader(this.path))
@@ -96,13 +110,67 @@ namespace HomeworkTheme07ConsoleApp
                     }
                     if (check == false)
                     {
-                        Console.WriteLine($"Записи с таким номером {idRecord} не найдено");
+                        Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
                     }
                 }
             }
             else      //иначе выводим соответсвующее сообщение 
             {
                 Console.WriteLine($"Файл с именем {this.path} не найден.");
+            }
+        }
+
+        public void Create()
+        {
+            char key = 'д';
+            int noteId = this.employees.Length;
+
+            do
+            {
+                noteId++;
+                Console.WriteLine($"\nID записи: {noteId}");
+
+                string nowDate = DateTime.Now.ToShortDateString();
+                string nowTime = DateTime.Now.ToShortTimeString();
+                string noteDate = nowDate + " " + nowTime;
+                Console.WriteLine($"Дата и время добавления записи {noteDate}");
+                
+
+                Console.WriteLine("Ф. И. О.: ");
+                string noteInitials = Console.ReadLine();
+
+                Console.WriteLine("Возраст: ");
+                byte noteAge = Convert.ToByte(Console.ReadLine());
+
+                Console.WriteLine("Рост: ");
+                int noteHeight = Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine("Датa рождения: ");
+                string noteDateOfBirth = Console.ReadLine();
+
+                Console.WriteLine("Место рождения: ");
+                string noteBirthPlace = Console.ReadLine();
+
+                Add(new Employee(noteId, Convert.ToDateTime(noteDate), noteInitials, noteAge, noteHeight, Convert.ToDateTime(noteDateOfBirth), noteBirthPlace));
+                Console.WriteLine("Продолжить н/д"); key = Console.ReadKey(true).KeyChar;
+            } while (char.ToLower(key) == 'н');
+
+            PrintDbToConsole();
+        }
+
+        public void Save(string Path)
+        {
+            for (int i = 0; i < this.index; i++)
+            {
+                string temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
+                                        this.employees[i].Id,
+                                        this.employees[i].RecordCreationDate,
+                                        this.employees[i].InitialsEmployee,
+                                        this.employees[i].Age,
+                                        this.employees[i].Height,
+                                        this.employees[i].DateOfBirth,
+                                        this.employees[i].BirthPlace);
+                File.WriteAllText(Path, $"{temp}\n");
             }
         }
 
