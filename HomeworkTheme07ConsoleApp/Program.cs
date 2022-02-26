@@ -22,9 +22,26 @@ namespace HomeworkTheme07ConsoleApp
 
             byte userOption = Convert.ToByte(Console.ReadLine());
 
-            Repository rep = new Repository(path, userOption);
+            switch (userOption)
+            {
+                case 1:
+                    Console.WriteLine("Введите номер записи:");
 
-            rep.PrintDbToConsole();
+                    int recordID = Convert.ToInt32(Console.ReadLine());
+
+                    Repository rep = new Repository(path, recordID);
+
+                    rep.PrintDbToConsole();  break; // Загрузка данных
+                case 2: break;
+                case 3: break;
+                case 4: break;
+                case 5: break;
+                default:
+                    Console.WriteLine("Вы ввели некорректное значение");
+                    break;
+            }
+
+           
 
             Console.ReadLine();
         }

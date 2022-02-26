@@ -13,33 +13,21 @@ namespace HomeworkTheme07ConsoleApp
 
         private string path;
 
-        private byte option;
+        private int idRecord;
 
         int index; // текущий элемент для добавления в employees
 
-        public Repository(string Path, byte Option)
+        public Repository(string Path, int IdRecord)
         {
             this.path = Path; // Сохранение пути к файлу с данными
             
             this.index = 0; // текущая позиция для добавления сотрудника в  employees 
 
-            this.option = Option;
+            this.idRecord = IdRecord;
 
             this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
-            switch (option)
-            {
-                case 1:
-                    this.GetAll(); break; // Загрузка данных
-                case 2: break;
-                case 3: break;
-                case 4: break;
-                case 5: break;
-                default:
-                    Console.WriteLine("Вы ввели некорректное значение");
-                    break;
-            }
-            
+            this.GetById(IdRecord);
         }
 
         /// <summary>
@@ -78,6 +66,37 @@ namespace HomeworkTheme07ConsoleApp
 
                         Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
                             Convert.ToDateTime(args[5]),args[6]));
+                    }
+                }
+            }
+            else      //иначе выводим соответсвующее сообщение 
+            {
+                Console.WriteLine($"Файл с именем {this.path} не найден.");
+            }
+        }
+
+        private void GetById(int idRecord)
+        {
+            FileInfo userFileName = new FileInfo(this.path);
+            if (userFileName.Exists)    //если файл существует, то считываем из него информацию
+            {
+                using (StreamReader sr = new StreamReader(this.path))
+                {
+                    bool check=false;
+                    while (!sr.EndOfStream)
+                    {
+                        string[] args = sr.ReadLine().Split('#');
+
+                        if (idRecord == Convert.ToInt32(args[0]))
+                        {
+                            check=true;
+                            Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                            Convert.ToDateTime(args[5]), args[6]));
+                        }
+                    }
+                    if (check == false)
+                    {
+                        Console.WriteLine($"Записи с таким номером {idRecord} не найдено");
                     }
                 }
             }
