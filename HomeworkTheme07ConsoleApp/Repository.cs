@@ -117,18 +117,16 @@ namespace HomeworkTheme07ConsoleApp
                         {
                             if (idRecord == Convert.ToInt32(args[0]))
                             {
-                                check = true;
                                 Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
                                 Convert.ToDateTime(args[5]), args[6]));
+                                check = true;
                             }
                         }
-
-                        if (check == false)
-                        {
-                            Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
-                        }
                     }
-                    
+                    if (check == false)
+                    {
+                        Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
+                    }
                 }
             }
             else      //иначе выводим соответсвующее сообщение 
