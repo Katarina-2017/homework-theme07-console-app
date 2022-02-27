@@ -36,7 +36,14 @@ namespace HomeworkTheme07ConsoleApp
                     Repository repCreate = new Repository(path);
                     repCreate.Create();
                     repCreate.Save(path); break;
-                case 3: break;
+                case 3:
+                    //Console.WriteLine("Введите номер записи, которую надо удалить:");
+
+                    //int recordIdDelete = Convert.ToInt32(Console.ReadLine());
+
+                    //Repository repDelete = new Repository(path, recordIdDelete);
+                    //repDelete.Delete(repDelete);
+                    break;
                 case 4: break;
                 case 5: break;
                 default:

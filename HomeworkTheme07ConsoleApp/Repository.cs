@@ -25,7 +25,7 @@ namespace HomeworkTheme07ConsoleApp
 
             this.idRecord = 0;
 
-            this.employees = new Employee[2]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
+            this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
             this.GetAll();
         }
@@ -38,7 +38,7 @@ namespace HomeworkTheme07ConsoleApp
 
             this.idRecord = IdRecord;
 
-            this.employees = new Employee[2]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
+            this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
 
             this.GetById(IdRecord);
         }
@@ -78,8 +78,15 @@ namespace HomeworkTheme07ConsoleApp
                     {
                         string[] args = sr.ReadLine().Split('#');
 
-                        Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
-                            Convert.ToDateTime(args[5]),args[6]));
+                        if (args[0] !="")
+                        {
+                            Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                            Convert.ToDateTime(args[5]), args[6]));
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Файл {this.path} пуст");
+                        }
                     }
                 }
             }
@@ -97,21 +104,31 @@ namespace HomeworkTheme07ConsoleApp
                 using (StreamReader sr = new StreamReader(this.path))
                 {
                     bool check=false;
+
                     while (!sr.EndOfStream)
                     {
                         string[] args = sr.ReadLine().Split('#');
 
-                        if (idRecord == Convert.ToInt32(args[0]))
+                        if (args[0] =="")
                         {
-                            check=true;
-                            Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
-                            Convert.ToDateTime(args[5]), args[6]));
+                            Console.WriteLine($"Файл {this.path} пуст");
+                        }
+                        else
+                        {
+                            if (idRecord == Convert.ToInt32(args[0]))
+                            {
+                                check = true;
+                                Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                                Convert.ToDateTime(args[5]), args[6]));
+                            }
+                        }
+
+                        if (check == false)
+                        {
+                            Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
                         }
                     }
-                    if (check == false)
-                    {
-                        Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
-                    }
+                    
                 }
             }
             else      //иначе выводим соответсвующее сообщение 
@@ -123,7 +140,8 @@ namespace HomeworkTheme07ConsoleApp
         public void Create()
         {
             char key = 'д';
-            int noteId = this.employees.Length;
+            int noteId = this.index;
+            Console.WriteLine($"\nID: {noteId}");
 
             do
             {
@@ -134,7 +152,7 @@ namespace HomeworkTheme07ConsoleApp
                 string nowTime = DateTime.Now.ToShortTimeString();
                 string noteDate = nowDate + " " + nowTime;
                 Console.WriteLine($"Дата и время добавления записи {noteDate}");
-                
+
 
                 Console.WriteLine("Ф. И. О.: ");
                 string noteInitials = Console.ReadLine();
@@ -158,19 +176,32 @@ namespace HomeworkTheme07ConsoleApp
             PrintDbToConsole();
         }
 
+        public void Delete(Repository employees)
+        {
+            for (int i = 0; i < index; i++)
+            {
+                Console.WriteLine(this.employees[i].Print());
+            }
+        }
+
         public void Save(string Path)
         {
-            for (int i = 0; i < this.index; i++)
+            FileInfo userFileName = new FileInfo(path);
+
+            using (StreamWriter sw = new StreamWriter(path))
             {
-                string temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
-                                        this.employees[i].Id,
-                                        this.employees[i].RecordCreationDate,
-                                        this.employees[i].InitialsEmployee,
-                                        this.employees[i].Age,
-                                        this.employees[i].Height,
-                                        this.employees[i].DateOfBirth,
-                                        this.employees[i].BirthPlace);
-                File.WriteAllText(Path, $"{temp}\n");
+                for (int i = 0; i < this.index; i++)
+                {
+                    string temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
+                                            this.employees[i].Id,
+                                            this.employees[i].RecordCreationDate,
+                                            this.employees[i].InitialsEmployee,
+                                            this.employees[i].Age,
+                                            this.employees[i].Height,
+                                            this.employees[i].DateOfBirth,
+                                            this.employees[i].BirthPlace);
+                    sw.WriteLine($"{temp}");
+                }
             }
         }
 
