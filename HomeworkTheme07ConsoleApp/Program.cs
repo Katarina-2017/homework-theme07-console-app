@@ -43,8 +43,17 @@ namespace HomeworkTheme07ConsoleApp
 
                     Repository repDelete = new Repository(path, recordIdDelete);
                     repDelete.Delete(repDelete);
+                    
                     break;
-                case 4: break;
+                case 4:
+                    Console.WriteLine("Введите номер записи, которую надо отредактировать:");
+
+                    int recordIdUpdate = Convert.ToInt32(Console.ReadLine());
+
+                    Repository repUpdate = new Repository(path, recordIdUpdate);
+                    repUpdate.Update(repUpdate);
+                    repUpdate.Save(path);
+                    break;
                 case 5: break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");

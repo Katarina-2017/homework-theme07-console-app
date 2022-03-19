@@ -176,10 +176,49 @@ namespace HomeworkTheme07ConsoleApp
 
         public void Delete(Repository employees)
         {
-            for (int i = 0; i < index; i++)
+            string temp = "";
+            for (int i = 0; i < this.index; i++)
             {
-                Console.WriteLine(this.employees[i].Print());
+                temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
+                                        this.employees[i].Id,
+                                        this.employees[i].RecordCreationDate,
+                                        this.employees[i].InitialsEmployee,
+                                        this.employees[i].Age,
+                                        this.employees[i].Height,
+                                        this.employees[i].DateOfBirth,
+                                        this.employees[i].BirthPlace);
             }
+
+            if (temp !="")
+            {
+                Console.WriteLine("Вы выбрали эту запись для удаления:");
+                Console.WriteLine(temp);
+
+                using (StreamReader reader = new StreamReader(this.path))
+                {
+                    using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
+                    {
+                        string line;
+
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (String.Equals(line, temp) == false)
+                            {
+                                writer.WriteLine(line);
+                            }
+                        }
+                    }
+                }
+                File.Delete(this.path);
+                File.Move("db_temp.txt", this.path);
+                Console.WriteLine("Запись успешно удалена!");
+            }
+        }
+
+        public void Update(Repository employee)
+        {
+            
+
         }
 
         public void Save(string Path)
