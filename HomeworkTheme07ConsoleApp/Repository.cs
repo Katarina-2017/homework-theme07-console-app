@@ -10,7 +10,7 @@ namespace HomeworkTheme07ConsoleApp
     struct Repository
     {
         private Employee[] employees;
-
+        
         private string path;
 
         private int idRecord;
@@ -139,8 +139,7 @@ namespace HomeworkTheme07ConsoleApp
         {
             char key = 'д';
             int noteId = this.index;
-            Console.WriteLine($"\nID: {noteId}");
-
+            
             do
             {
                 noteId++;
@@ -188,11 +187,11 @@ namespace HomeworkTheme07ConsoleApp
                                         this.employees[i].DateOfBirth,
                                         this.employees[i].BirthPlace);
             }
-
+            
             if (temp !="")
             {
                 Console.WriteLine("Вы выбрали эту запись для удаления:");
-                Console.WriteLine(temp);
+                PrintDbToConsole();
 
                 using (StreamReader reader = new StreamReader(this.path))
                 {
@@ -215,10 +214,77 @@ namespace HomeworkTheme07ConsoleApp
             }
         }
 
-        public void Update(Repository employee)
+        public void Update(Repository employees)
         {
-            
+            string temp = "";
 
+            int noteId = 0;
+
+            for (int i = 0; i < this.index; i++)
+            {
+                temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
+                                        this.employees[i].Id,
+                                        this.employees[i].RecordCreationDate,
+                                        this.employees[i].InitialsEmployee,
+                                        this.employees[i].Age,
+                                        this.employees[i].Height,
+                                        this.employees[i].DateOfBirth,
+                                        this.employees[i].BirthPlace);
+                noteId = this.employees[i].Id;
+            }
+
+            if (temp != "")
+            {
+                Console.WriteLine("Вы выбрали эту запись для редактирования:");
+                PrintDbToConsole();
+
+                string note = string.Empty;
+
+                Console.WriteLine("Введите новые значения полей:");
+                Console.WriteLine($"\nID записи: {noteId}");
+                note += $"{noteId}" + "#";
+
+                Console.WriteLine($"Дата и время добавления записи:");
+                note += $"{Console.ReadLine()}" + "#";
+
+                Console.WriteLine("Ф. И. О.: ");
+                note += $"{Console.ReadLine()}" + "#";
+
+                Console.WriteLine("Возраст: ");
+                note += $"{Console.ReadLine()}" + "#";
+
+                Console.WriteLine("Рост: ");
+                note += $"{Console.ReadLine()}" + "#";
+
+                Console.WriteLine("Датa рождения: ");
+                note += $"{Console.ReadLine()}" + "#";
+
+                Console.WriteLine("Место рождения: ");
+                note += $"{Console.ReadLine()}";
+
+                using (StreamReader reader = new StreamReader(this.path))
+                {
+                    using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
+                    {
+                        string line;
+
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (String.Equals(line, temp) == true)
+                            {
+                                writer.WriteLine(note);
+                            }
+                            else
+                            {
+                                writer.WriteLine(line);
+                            }
+                        }
+                    }
+                }
+                File.Delete(this.path);
+                File.Move("db_temp.txt", this.path);
+                Console.WriteLine("Запись успешно изменена!");
+            }
         }
 
         public void Save(string Path)

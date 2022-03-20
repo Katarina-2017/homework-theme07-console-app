@@ -39,7 +39,7 @@ namespace HomeworkTheme07ConsoleApp
 
         public int Height { get { return this.height; } set { this.height = value; } }
 
-        public DateTime DateOfBirth { get { return this.dateOfBirth; } set { this.dateOfBirth = value; } }
+        public DateTime DateOfBirth { get { return this.dateOfBirth.Date; } set { this.dateOfBirth = value; } }
 
         public string BirthPlace { get { return this.birthPlace; } set { this.birthPlace = value; } }
 
