@@ -52,8 +52,8 @@ namespace HomeworkTheme07ConsoleApp
                     Repository repDelete = new Repository(path, recordIdDelete);
                     repDelete.Delete(repDelete);
                     Console.ReadKey();
-                    Repository repRewriter = new Repository(path);
-                    repRewriter.PrintDbToConsole();
+                    Repository repDeleter = new Repository(path);
+                    repDeleter.PrintDbToConsole();
 
                     break;
                 case 4:
@@ -63,7 +63,9 @@ namespace HomeworkTheme07ConsoleApp
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
                     repUpdate.Update(repUpdate);
-                    
+
+                    Repository repUpdater = new Repository(path);
+                    repUpdater.PrintDbToConsole();
                     break;
                 case 5: break;
                 default:

@@ -245,60 +245,61 @@ namespace HomeworkTheme07ConsoleApp
                                         this.employees[i].DateOfBirth,
                                         this.employees[i].BirthPlace);
                 noteId = this.employees[i].Id;
-            }
 
-            if (temp != "")
-            {
-                Console.WriteLine("Вы выбрали эту запись для редактирования:");
-                Console.WriteLine(temp);
-
-                string note = string.Empty;
-
-                Console.WriteLine("Введите новые значения полей:");
-                Console.WriteLine($"\nID записи: {noteId}");
-                note += $"{noteId}" + "#";
-
-                Console.WriteLine($"Дата и время добавления записи:");
-                note += $"{Console.ReadLine()}" + "#";
-
-                Console.WriteLine("Ф. И. О.: ");
-                note += $"{Console.ReadLine()}" + "#";
-
-                Console.WriteLine("Возраст: ");
-                note += $"{Console.ReadLine()}" + "#";
-
-                Console.WriteLine("Рост: ");
-                note += $"{Console.ReadLine()}" + "#";
-
-                Console.WriteLine("Датa рождения: ");
-                note += $"{Console.ReadLine()}" + "#";
-
-                Console.WriteLine("Место рождения: ");
-                note += $"{Console.ReadLine()}";
-
-                using (StreamReader reader = new StreamReader(this.path))
+                if (temp != "")
                 {
-                    using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
-                    {
-                        string line;
+                    Console.WriteLine("Вы выбрали эту запись для редактирования:");
+                    Console.WriteLine(temp);
 
-                        while ((line = reader.ReadLine()) != null)
+                    string note = string.Empty;
+
+                    Console.WriteLine("Введите новые значения полей:");
+                    Console.WriteLine($"\nID записи: {noteId}");
+                    note += $"{noteId}" + "#";
+
+                    Console.WriteLine($"Дата и время добавления записи:");
+                    note += $"{Console.ReadLine()}" + "#";
+
+                    Console.WriteLine("Ф. И. О.: ");
+                    note += $"{Console.ReadLine()}" + "#";
+
+                    Console.WriteLine("Возраст: ");
+                    note += $"{Console.ReadLine()}" + "#";
+
+                    Console.WriteLine("Рост: ");
+                    note += $"{Console.ReadLine()}" + "#";
+
+                    Console.WriteLine("Датa рождения: ");
+                    note += $"{Console.ReadLine()}" + " 00:00" + "#";
+
+                    Console.WriteLine("Место рождения: ");
+                    note += $"{Console.ReadLine()}";
+
+                    using (StreamReader reader = new StreamReader(this.path))
+                    {
+                        using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
                         {
-                            if (String.Equals(line, temp) == true)
+                            string line;
+
+                            while ((line = reader.ReadLine()) != null)
                             {
-                                writer.WriteLine(note);
-                            }
-                            else
-                            {
-                                writer.WriteLine(line);
+                                if (String.Equals(line, temp) == true)
+                                {
+                                    writer.WriteLine(note);
+                                }
+                                else
+                                {
+                                    writer.WriteLine(line);
+                                }
                             }
                         }
                     }
+                    File.Delete(this.path);
+                    File.Move("db_temp.txt", this.path);
+                    Console.WriteLine("Запись успешно изменена!");
                 }
-                File.Delete(this.path);
-                File.Move("db_temp.txt", this.path);
-                Console.WriteLine("Запись успешно изменена!");
             }
+
         }
 
         public void Save(string Path)
