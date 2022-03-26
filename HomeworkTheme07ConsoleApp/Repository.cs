@@ -176,8 +176,12 @@ namespace HomeworkTheme07ConsoleApp
         public void Delete(Repository employees)
         {
             string temp = "";
+            
+            
+
             for (int i = 0; i < this.index; i++)
             {
+                bool check = false;
                 temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
                                         this.employees[i].Id,
                                         this.employees[i].RecordCreationDate,
@@ -186,31 +190,41 @@ namespace HomeworkTheme07ConsoleApp
                                         this.employees[i].Height,
                                         this.employees[i].DateOfBirth,
                                         this.employees[i].BirthPlace);
-            }
-            
-            if (temp !="")
-            {
-                Console.WriteLine("Вы выбрали эту запись для удаления:");
-                PrintDbToConsole();
-
-                using (StreamReader reader = new StreamReader(this.path))
+                if (temp != "")
                 {
-                    using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
-                    {
-                        string line;
+                    Console.WriteLine("Вы выбрали эту запись для удаления:");
+                    Console.WriteLine(temp);
 
-                        while ((line = reader.ReadLine()) != null)
+                    using (StreamReader reader = new StreamReader(this.path))
+                    {
+                        using (StreamWriter writer = new StreamWriter(@"db_temp.txt"))
                         {
-                            if (String.Equals(line, temp) == false)
+                            string line;
+
+                            while ((line = reader.ReadLine()) != null)
                             {
-                                writer.WriteLine(line);
+                                if (String.Equals(line, temp) == false)
+                                {
+                                    writer.WriteLine(line);
+                                }
+                                else
+                                {
+                                    check = true;
+                                }
                             }
                         }
                     }
+                    File.Delete(this.path);
+                    File.Move("db_temp.txt", this.path);
+                    if (check == true)
+                    {
+                        Console.WriteLine("Запись успешно удалена!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Что-то пошло не так...Запись не удалена!");
+                    }
                 }
-                File.Delete(this.path);
-                File.Move("db_temp.txt", this.path);
-                Console.WriteLine("Запись успешно удалена!");
             }
         }
 
@@ -236,7 +250,7 @@ namespace HomeworkTheme07ConsoleApp
             if (temp != "")
             {
                 Console.WriteLine("Вы выбрали эту запись для редактирования:");
-                PrintDbToConsole();
+                Console.WriteLine(temp);
 
                 string note = string.Empty;
 

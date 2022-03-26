@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HomeworkTheme07ConsoleApp
@@ -10,6 +12,12 @@ namespace HomeworkTheme07ConsoleApp
     {
         static void Main(string[] args)
         {
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+            culture.DateTimeFormat.LongDatePattern = "dd.MM.yyyy";
+            culture.DateTimeFormat.LongTimePattern = "HH:mm";
+            Thread.CurrentThread.CurrentCulture = culture;
+
             string path = @"db.txt";
 
             Console.WriteLine($"Добро пожаловать в ежедневник. \nВыберите одну из следующих функций:" +
@@ -43,6 +51,10 @@ namespace HomeworkTheme07ConsoleApp
 
                     Repository repDelete = new Repository(path, recordIdDelete);
                     repDelete.Delete(repDelete);
+                    Console.ReadKey();
+                    Repository repRewriter = new Repository(path);
+                    repRewriter.PrintDbToConsole();
+
                     break;
                 case 4:
                     Console.WriteLine("Введите номер записи, которую надо отредактировать:");
