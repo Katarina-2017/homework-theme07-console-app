@@ -34,19 +34,18 @@ namespace HomeworkTheme07ConsoleApp
             {
                 case 1:
                     Console.WriteLine("Введите номер записи:");
-
                     int recordID = Convert.ToInt32(Console.ReadLine());
 
                     Repository rep = new Repository(path, recordID);
-
-                    rep.PrintDbToConsole();  break; // Загрузка данных
+                    rep.PrintDbToConsole();
+                    break; 
                 case 2:
                     Repository repCreate = new Repository(path);
                     repCreate.Create();
-                    repCreate.Save(path); break;
+                    repCreate.Save(path);
+                    break;
                 case 3:
                     Console.WriteLine("Введите номер записи, которую надо удалить:");
-
                     int recordIdDelete = Convert.ToInt32(Console.ReadLine());
 
                     Repository repDelete = new Repository(path, recordIdDelete);
@@ -54,11 +53,9 @@ namespace HomeworkTheme07ConsoleApp
                     Console.ReadKey();
                     Repository repDeleter = new Repository(path);
                     repDeleter.PrintDbToConsole();
-
                     break;
                 case 4:
                     Console.WriteLine("Введите номер записи, которую надо отредактировать:");
-
                     int recordIdUpdate = Convert.ToInt32(Console.ReadLine());
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
@@ -67,7 +64,18 @@ namespace HomeworkTheme07ConsoleApp
                     Repository repUpdater = new Repository(path);
                     repUpdater.PrintDbToConsole();
                     break;
-                case 5: break;
+                case 5:
+                    Console.WriteLine("Введите диапазон дат:");
+                    Console.WriteLine("Введите начальное значение даты:");
+                    DateTime dateStartUser = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Введите конечное значение даты:");
+                    DateTime dateEndUser = Convert.ToDateTime(Console.ReadLine());
+
+                    Repository repUserDate = new Repository(path, dateStartUser, dateEndUser);
+                    break;
+                case 6:
+                    Console.WriteLine("Отсортировать данные по возрастанию:");
+                    break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");
                     break;

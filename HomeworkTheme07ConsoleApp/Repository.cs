@@ -25,7 +25,7 @@ namespace HomeworkTheme07ConsoleApp
 
             this.idRecord = 0;
 
-            this.employees = new Employee[1]; // инициализаия массива сотрудников.    | изначально предпологаем, что данных нет
+            this.employees = new Employee[1]; // инициализация массива сотрудников.    | изначально предпологаем, что данных нет
 
             this.GetAll();
         }
@@ -43,6 +43,34 @@ namespace HomeworkTheme07ConsoleApp
             this.GetById(IdRecord);
         }
 
+        public Repository (string Path, DateTime dateStart, DateTime dateEnd)
+        {
+            this.path = Path; // Сохранение пути к файлу с данными
+
+            this.index = 0; // текущая позиция для добавления сотрудника в  employees 
+
+            this.idRecord = 0;
+
+            this.employees = new Employee[1]; // инициализация массива сотрудников.    | изначально предпологаем, что данных нет
+
+            this.GetAll();
+
+            if (dateStart < dateEnd)
+            {
+                Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+                for (int i = 0; i < index; i++)
+                {
+                    if (this.employees[i].RecordCreationDate >= dateStart && this.employees[i].RecordCreationDate <= dateEnd)
+                    {
+                        Console.WriteLine(this.employees[i].Print());
+                    }
+                }
+            }
+            else if (dateStart > dateEnd)
+            {
+                Console.WriteLine("Вы задали некорректный диапазон дат");
+            }
+        }
         /// <summary>
         /// Метод увеличения текущего хранилища
         /// </summary>
@@ -177,8 +205,6 @@ namespace HomeworkTheme07ConsoleApp
         {
             string temp = "";
             
-            
-
             for (int i = 0; i < this.index; i++)
             {
                 bool check = false;
