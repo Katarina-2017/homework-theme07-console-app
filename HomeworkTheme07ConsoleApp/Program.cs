@@ -12,13 +12,14 @@ namespace HomeworkTheme07ConsoleApp
     {
         static void Main(string[] args)
         {
+            // Устанавливаем определенный формат даты и времени dd.MM.yyyy  и HH:mm
             CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
             culture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
             culture.DateTimeFormat.LongDatePattern = "dd.MM.yyyy";
             culture.DateTimeFormat.LongTimePattern = "HH:mm";
             Thread.CurrentThread.CurrentCulture = culture;
 
-            string path = @"db.txt";
+            string path = @"db.txt"; // Исходный файл
 
             Console.WriteLine($"Добро пожаловать в ежедневник. \nВыберите одну из следующих функций:" +
                 $"\n1 - Просмотр записи;" +
@@ -60,7 +61,7 @@ namespace HomeworkTheme07ConsoleApp
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
                     repUpdate.Update(repUpdate);
-
+                    Console.ReadKey();
                     Repository repUpdater = new Repository(path);
                     repUpdater.PrintDbToConsole();
                     break;
@@ -86,9 +87,6 @@ namespace HomeworkTheme07ConsoleApp
                     Console.WriteLine("Вы ввели некорректное значение");
                     break;
             }
-
-           
-
             Console.ReadLine();
         }
     }
