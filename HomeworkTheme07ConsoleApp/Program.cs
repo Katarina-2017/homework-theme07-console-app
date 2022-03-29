@@ -36,8 +36,8 @@ namespace HomeworkTheme07ConsoleApp
                     Console.WriteLine("Введите номер записи:");
                     int recordID = Convert.ToInt32(Console.ReadLine());
 
-                    Repository rep = new Repository(path, recordID);
-                    rep.PrintDbToConsole();
+                    Repository repView = new Repository(path, recordID);
+                    repView.PrintDbToConsole();
                     break; 
                 case 2:
                     Repository repCreate = new Repository(path);
@@ -74,7 +74,13 @@ namespace HomeworkTheme07ConsoleApp
                     Repository repUserDate = new Repository(path, dateStartUser, dateEndUser);
                     break;
                 case 6:
-                    Console.WriteLine("Отсортировать данные по возрастанию:");
+                    Console.WriteLine("Сортировка данных в ежедневнике. \nВыберите один из двух способов:" +
+                $"\n1 - Сортировка по возрастанию даты;" +
+                $"\n2 - Сортировка по убыванию даты;");
+                    byte userWay = Convert.ToByte(Console.ReadLine());
+
+                    Repository repUserSorting = new Repository(path, userWay);
+                    repUserSorting.PrintDbToConsole();
                     break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");

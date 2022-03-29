@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HomeworkTheme07ConsoleApp
 {
-    struct Employee
+    struct Employee 
     {
         #region Поля
 

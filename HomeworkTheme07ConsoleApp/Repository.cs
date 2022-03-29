@@ -58,6 +58,7 @@ namespace HomeworkTheme07ConsoleApp
             if (dateStart < dateEnd)
             {
                 Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+
                 for (int i = 0; i < index; i++)
                 {
                     if (this.employees[i].RecordCreationDate >= dateStart && this.employees[i].RecordCreationDate <= dateEnd)
@@ -69,6 +70,62 @@ namespace HomeworkTheme07ConsoleApp
             else if (dateStart > dateEnd)
             {
                 Console.WriteLine("Вы задали некорректный диапазон дат");
+            }
+        }
+
+        public Repository (string Path, byte userWay)
+        {
+            this.path = Path; // Сохранение пути к файлу с данными
+
+            this.index = 0; // текущая позиция для добавления сотрудника в  employees 
+
+            this.idRecord = 0;
+
+            this.employees = new Employee[1]; // инициализация массива сотрудников.    | изначально предпологаем, что данных нет
+
+            this.GetAll();
+
+            switch (userWay)
+            {
+                case 1:
+                    // сортировка пузырьком
+                    Employee tmp;
+
+                    for (int i = index - 1; i >= 0; i--)
+                    {
+                        for (int j = 0; j < i; j++)
+                        {
+                            // сравниваем элементы массива структур по дате и времени создания записи
+                            if (employees[j].RecordCreationDate > employees[j + 1].RecordCreationDate)
+                            {
+                                tmp = employees[j];
+                                employees[j] = employees[j + 1];
+                                employees[j + 1] = tmp;
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    // сортировка пузырьком
+                    Employee itm;
+
+                    for (int i = index - 1; i >= 0; i--)
+                    {
+                        for (int j = 0; j < i; j++)
+                        {
+                            // сравниваем элементы массива структур по дате и времени создания записи
+                            if (employees[j].RecordCreationDate < employees[j + 1].RecordCreationDate)
+                            {
+                                itm = employees[j];
+                                employees[j] = employees[j + 1];
+                                employees[j + 1] = itm;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Вы ввели некорректное значение");
+                    break;
             }
         }
         /// <summary>
