@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -195,8 +196,8 @@ namespace HomeworkTheme07ConsoleApp
 
                         if (args[0] !="") // Если строка не пустая, добавляем сотрудника в массив-хранилище
                         {
-                            Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
-                            Convert.ToDateTime(args[5]), args[6]));
+                            Add(new Employee(Convert.ToInt32(args[0]), DateTime.ParseExact(args[1], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                            DateTime.ParseExact(args[5], "dd.MM.yyyy", CultureInfo.InvariantCulture), args[6]));
                         }
                         else // Иначе выводим соотвествующее сообщение
                         {
@@ -236,8 +237,8 @@ namespace HomeworkTheme07ConsoleApp
                         {
                             if (idRecord == Convert.ToInt32(args[0])) // Если введенный номер совпадает с идентификатором записи в файле, то добавляем этого сотрудника в массив-хранилище
                             {
-                                Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
-                                Convert.ToDateTime(args[5]), args[6]));
+                                Add(new Employee(Convert.ToInt32(args[0]), DateTime.ParseExact(args[1], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
+                                DateTime.ParseExact(args[5], "dd.MM.yyyy", CultureInfo.InvariantCulture), args[6]));
                                 check = true;
                             }
                         }
@@ -267,7 +268,9 @@ namespace HomeworkTheme07ConsoleApp
                 noteId++; // Определяем ID новой записи автоматически, исходя из количества элементов в массиве
                 Console.WriteLine($"\nID записи: {noteId}");
 
-                string noteDate = DateTime.Now.ToString();
+                string nowDate = DateTime.Now.ToShortDateString();
+                string nowTime = DateTime.Now.ToShortTimeString();
+                string noteDate = nowDate + " " + nowTime;
                 Console.WriteLine($"Дата и время добавления записи: {noteDate}");
 
                 Console.WriteLine("Ф. И. О.: ");
@@ -285,7 +288,8 @@ namespace HomeworkTheme07ConsoleApp
                 Console.WriteLine("Место рождения: ");
                 string noteBirthPlace = Console.ReadLine();
 
-                Add(new Employee(noteId, Convert.ToDateTime(noteDate), noteInitials, noteAge, noteHeight, Convert.ToDateTime(noteDateOfBirth), noteBirthPlace)); // Добавляем сотрудника в массив
+                Add(new Employee(noteId, DateTime.ParseExact(noteDate, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture), noteInitials, noteAge, noteHeight,
+                    DateTime.ParseExact(noteDateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture), noteBirthPlace)); // Добавляем сотрудника в массив
                 Console.WriteLine("Продолжить н/д"); key = Console.ReadKey(true).KeyChar;
             } while (char.ToLower(key) == 'н');
 
