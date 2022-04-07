@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,14 +11,7 @@ namespace HomeworkTheme07ConsoleApp
     {
         static void Main(string[] args)
         {
-            // Устанавливаем определенный формат даты и времени dd.MM.yyyy  и HH:mm
-            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            culture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
-            culture.DateTimeFormat.LongDatePattern = "dd.MM.yyyy";
-            culture.DateTimeFormat.LongTimePattern = "HH:mm";
-            Thread.CurrentThread.CurrentCulture = culture;
-
-            string path = @"db.txt"; // Исходный файл
+             string path = @"db.txt"; // Исходный файл
 
             Console.WriteLine($"Добро пожаловать в ежедневник. \nВыберите одну из следующих функций:" +
                 $"\n1 - Просмотр записи;" +
