@@ -34,10 +34,10 @@ namespace HomeworkTheme07ConsoleApp
             switch (userOption)
             {
                 case 1:
-                    Console.WriteLine("Введите номер записи:");
-                    int recordID = Convert.ToInt32(Console.ReadLine());
+                    //Console.WriteLine("Введите номер записи:");
+                    //int recordID = Convert.ToInt32(Console.ReadLine());
 
-                    Repository repView = new Repository(path, recordID);
+                    Repository repView = new Repository(path);
                     repView.PrintDbToConsole();
                     break; 
                 case 2:
@@ -51,9 +51,11 @@ namespace HomeworkTheme07ConsoleApp
 
                     Repository repDelete = new Repository(path, recordIdDelete);
                     repDelete.Delete(repDelete);
-                    Console.ReadKey();
-                    Repository repDeleter = new Repository(path);
-                    repDeleter.PrintDbToConsole();
+                    //repDelete.Save(path);
+                    //Console.ReadKey();
+                    //Repository repDeleter = new Repository(path);
+                    
+                    //repDeleter.PrintDbToConsole();
                     break;
                 case 4:
                     Console.WriteLine("Введите номер записи, которую надо отредактировать:");
