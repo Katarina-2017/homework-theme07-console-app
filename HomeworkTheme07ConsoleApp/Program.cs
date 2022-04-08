@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,7 +12,14 @@ namespace HomeworkTheme07ConsoleApp
     {
         static void Main(string[] args)
         {
-             string path = @"db.txt"; // Исходный файл
+            // Устанавливаем определенный формат даты и времени dd.MM.yyyy  и HH:mm
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+            culture.DateTimeFormat.LongDatePattern = "dd.MM.yyyy";
+            culture.DateTimeFormat.LongTimePattern = "HH:mm";
+            Thread.CurrentThread.CurrentCulture = culture;
+
+            string path = @"db.txt"; // Исходный файл
 
             Console.WriteLine($"Добро пожаловать в ежедневник. \nВыберите одну из следующих функций:" +
                 $"\n1 - Просмотр записи;" +
@@ -26,16 +34,16 @@ namespace HomeworkTheme07ConsoleApp
             switch (userOption)
             {
                 case 1:
-                    //Console.WriteLine("Введите номер записи:");
-                    //int recordID = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Введите номер записи:");
+                    int recordID = Convert.ToInt32(Console.ReadLine());
 
-                    Repository repView = new Repository(path);
-                    repView.PrintDbToConsole();
+                    var repView = new Repository(path, recordID);
+                    
                     break; 
                 case 2:
                     Repository repCreate = new Repository(path);
                     repCreate.Create();
-                    repCreate.Save(path);
+
                     break;
                 case 3:
                     Console.WriteLine("Введите номер записи, которую надо удалить:");
@@ -57,7 +65,7 @@ namespace HomeworkTheme07ConsoleApp
                     repUpdate.Update(repUpdate);
                     Console.ReadKey();
                     Repository repUpdater = new Repository(path);
-                    repUpdater.PrintDbToConsole();
+                    //repUpdater.PrintDbToConsole();
                     break;
                 case 5:
                     Console.WriteLine("Введите диапазон дат:");
@@ -75,7 +83,7 @@ namespace HomeworkTheme07ConsoleApp
                     byte userWay = Convert.ToByte(Console.ReadLine());
 
                     Repository repUserSorting = new Repository(path, userWay);
-                    repUserSorting.PrintDbToConsole();
+                    //repUserSorting.PrintDbToConsole();
                     break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");

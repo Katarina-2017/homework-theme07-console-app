@@ -50,7 +50,9 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = new List<Employee>();
 
-            this.GetById(IdRecord); // Получаем сотрудников с заданным ID
+            _employees = GetEmployeesFromTxt(); 
+
+            PrintDbToConsole(GetById(idRecord));
         }
 
         /// <summary>
@@ -151,43 +153,63 @@ namespace HomeworkTheme07ConsoleApp
         // Получаем список всех сотрудников из файла (парсинг файла, частный метод)
         private List<Employee> GetEmployeesFromTxt()
         {
-            var employees = new List<Employee>();
+            FileInfo userFileName = new FileInfo(this.path);
 
-            string[] employeesTxt = File.ReadAllLines(this.path);
-            foreach (string employeeTxtString in employeesTxt)
+            if (userFileName.Exists)
             {
-                var employee = GetEmployeeFromTxtString(employeeTxtString);
-                employees.Add(employee);
+                var employees = new List<Employee>();
 
+                string[] employeesTxt = File.ReadAllLines(this.path);
+                foreach (string employeeTxtString in employeesTxt)
+                {
+                    var employee = GetEmployeeFromTxtString(employeeTxtString);
+                    employees.Add(employee);
+
+                }
+
+                return employees;
             }
-
-            return employees;
+            else
+            {
+                var employeesNull = new List<Employee>(); ;
+                Console.WriteLine($"Файл с именем {this.path} не найден.");
+                return employeesNull;
+            }
         }
 
         // Получаем сотрудника из строки (парсинг сотрудника, частный метод)
         private Employee GetEmployeeFromTxtString(string employeeTxtString)
         {
-            string[] args = employeeTxtString.Split('#');
 
-            int id = int.Parse(args[0]);
-            DateTime createdAt = DateTime.ParseExact(args[1], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
-            string fullName = args[2];
-            byte age = byte.Parse(args[3]);
-            int height = int.Parse(args[4]);
-            DateTime birthDate = DateTime.ParseExact(args[5], "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            string birthPlace = args[6];
+                string[] args = employeeTxtString.Split('#');
+                if (args[0] !="")
+                {
+                    int id = int.Parse(args[0]);
+                    DateTime createdAt = DateTime.ParseExact(args[1], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                    string fullName = args[2];
+                    byte age = byte.Parse(args[3]);
+                    int height = int.Parse(args[4]);
+                    DateTime birthDate = DateTime.ParseExact(args[5], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                    string birthPlace = args[6];
 
-            var employee = new Employee(
-                id,
-                createdAt,
-                fullName,
-                age,
-                height,
-                birthDate,
-                birthPlace
-                );
+                    var employee = new Employee(
+                        id,
+                        createdAt,
+                        fullName,
+                        age,
+                        height,
+                        birthDate,
+                        birthPlace
+                        );
 
-            return employee;
+                    return employee;
+                }
+                else
+                {
+                    var employeeNull = new Employee();
+                    Console.WriteLine($"Файл {this.path} пуст");
+                    return employeeNull;
+                }
         }
         /// <summary>
         /// Метод GetAll() - получает всех сотрудников
@@ -200,43 +222,18 @@ namespace HomeworkTheme07ConsoleApp
         /// Метод GetById(int idRecord) - получает сотрудника по идентификатору
         /// </summary>
         /// <param name="idRecord">Идентификатор записи</param>
-        private void GetById(int idRecord)
+        public List<Employee> GetById(int idRecord)
         {
-            //FileInfo userFileName = new FileInfo(this.path);
-            //if (userFileName.Exists) // Если файл существует, то считываем из него информацию
-            //{
-            //    using (StreamReader sr = new StreamReader(this.path))
-            //    {
-            //        bool check = false; // Переменная для проверки на наличие записи с заданным идентификатором
+            var employee = new List<Employee>();
 
-            //        while (!sr.EndOfStream)
-            //        {
-            //            string[] args = sr.ReadLine().Split('#');
-
-            //            if (args[0] == "")
-            //            {
-            //                Console.WriteLine($"Файл {this.path} пуст");
-            //            }
-            //            else
-            //            {
-            //                if (idRecord == Convert.ToInt32(args[0])) // Если введенный номер совпадает с идентификатором записи в файле, то добавляем этого сотрудника в массив-хранилище
-            //                {
-            //                    Add(new Employee(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], Convert.ToByte(args[3]), Convert.ToInt32(args[4]),
-            //                    Convert.ToDateTime(args[5]), args[6]));
-            //                    check = true;
-            //                }
-            //            }
-            //        }
-            //        if (check == false) // Если записи с заданным идентификатором нет в файле, то выводим соотвествующее сообщение
-            //        {
-            //            Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
-            //        }
-            //    }
-            //}
-            //else // Иначе выводим соответсвующее сообщение 
-            //{
-            //    Console.WriteLine($"Файл с именем {this.path} не найден.");
-            //}
+            foreach (var value in _employees)
+            {
+                if (value.Id == idRecord)
+                {
+                    employee.Add(value);
+                }
+            }
+            return employee;
         }
 
         /// <summary>
@@ -244,37 +241,39 @@ namespace HomeworkTheme07ConsoleApp
         /// </summary>
         public void Create()
         {
-            //char key = 'д';
-            //int noteId = this.index; // Сохраняем количество элементов массива-хранилища
-            
-            //do
-            //{
-            //    noteId++; // Определяем ID новой записи автоматически, исходя из количества элементов в массиве
-            //    Console.WriteLine($"\nID записи: {noteId}");
+            char key = 'д';
+            int noteId = _employees.Count; // Сохраняем количество элементов массива-хранилища
 
-            //    string noteDate = DateTime.Now.ToString();
-            //    Console.WriteLine($"Дата и время добавления записи: {noteDate}");
+            do
+            {
+                noteId++; // Определяем ID новой записи автоматически, исходя из количества элементов в массиве
+                Console.WriteLine($"\nID записи: {noteId}");
 
-            //    Console.WriteLine("Ф. И. О.: ");
-            //    string noteInitials = Console.ReadLine();
+                string noteDate = DateTime.Now.ToString();
+                Console.WriteLine($"Дата и время добавления записи: {noteDate}");
 
-            //    Console.WriteLine("Возраст: ");
-            //    byte noteAge = Convert.ToByte(Console.ReadLine());
+                Console.WriteLine("Ф. И. О.: ");
+                string noteInitials = Console.ReadLine();
 
-            //    Console.WriteLine("Рост: ");
-            //    int noteHeight = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Возраст: ");
+                byte noteAge = Convert.ToByte(Console.ReadLine());
 
-            //    Console.WriteLine("Датa рождения: ");
-            //    string noteDateOfBirth = Console.ReadLine();
+                Console.WriteLine("Рост: ");
+                int noteHeight = Convert.ToInt32(Console.ReadLine());
 
-            //    Console.WriteLine("Место рождения: ");
-            //    string noteBirthPlace = Console.ReadLine();
+                Console.WriteLine("Датa рождения: ");
+                string noteDateOfBirth = Console.ReadLine();
 
-            //    Add(new Employee(noteId, Convert.ToDateTime(noteDate), noteInitials, noteAge, noteHeight, Convert.ToDateTime(noteDateOfBirth), noteBirthPlace)); // Добавляем сотрудника в массив
-            //    Console.WriteLine("Продолжить н/д"); key = Console.ReadKey(true).KeyChar;
-            //} while (char.ToLower(key) == 'н');
+                Console.WriteLine("Место рождения: ");
+                string noteBirthPlace = Console.ReadLine();
 
-            //PrintDbToConsole(); // Выводим массив сотрудников на экран
+                _employees.Add(new Employee(noteId, Convert.ToDateTime(noteDate), noteInitials, noteAge, noteHeight, Convert.ToDateTime(noteDateOfBirth), noteBirthPlace)); // Добавляем сотрудника в массив
+                Console.WriteLine("Продолжить н/д"); key = Console.ReadKey(true).KeyChar;
+            } while (char.ToLower(key) == 'н');
+
+            PrintDbToConsole(_employees); // Выводим массив сотрудников на экран
+
+            Save(this.path, _employees);
         }
 
         /// <summary>
@@ -402,35 +401,35 @@ namespace HomeworkTheme07ConsoleApp
         /// Метод Save(string Path) - перезаписывает измененные данные в файл
         /// </summary>
         /// <param name="Path">Путь к файлу с данными</param>
-        public void Save(string Path)
+        public void Save(string Path, List<Employee> employeeList)
         {
-            //FileInfo userFileName = new FileInfo(path);
+            FileInfo userFileName = new FileInfo(path);
 
-            //using (StreamWriter sw = new StreamWriter(path))
-            //{
-            //    for (int i = 0; i < this.index; i++)
-            //    {
-            //        string temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}", // Формирует строки в определенном формате через #
-            //                                this.employees[i].Id,
-            //                                this.employees[i].RecordCreationDate,
-            //                                this.employees[i].InitialsEmployee,
-            //                                this.employees[i].Age,
-            //                                this.employees[i].Height,
-            //                                this.employees[i].DateOfBirth.ToShortDateString(),
-            //                                this.employees[i].BirthPlace);
-            //        sw.WriteLine($"{temp}"); // Записываем эту строку в исходный файл
-            //    }
-            //}
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                for (int i = 0; i < employeeList.Count; i++)
+                {
+                    string temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}", // Формирует строки в определенном формате через #
+                                            employeeList[i].Id,
+                                            employeeList[i].RecordCreationDate,
+                                            employeeList[i].InitialsEmployee,
+                                            employeeList[i].Age,
+                                            employeeList[i].Height,
+                                            employeeList[i].DateOfBirth.ToShortDateString(),
+                                            employeeList[i].BirthPlace);
+                    sw.WriteLine($"{temp}"); // Записываем эту строку в исходный файл
+                }
+            }
         }
 
         /// <summary>
         /// Метод PrintDbToConsole() - выводит полную информацию о сотруднике на экран
         /// </summary>
-        public void PrintDbToConsole()
+        public void PrintDbToConsole(List<Employee> employeeList)
         {
             Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
-            foreach (var employee in _employees)
+            foreach (var employee in employeeList)
             {
                 Console.WriteLine(employee.Print());
             }
