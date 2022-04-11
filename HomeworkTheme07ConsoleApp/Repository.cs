@@ -69,24 +69,24 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = new List<Employee>();
 
-            this.GetAll(); // Получаем всех сотрудников
+            _employees = GetEmployeesFromTxt(); // Получаем всех сотрудников
 
-            //if (dateStart < dateEnd) // Начальная дата должна быть меньше конечной даты диапазона
-            //{
-            //    Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
-            //    for (int i = 0; i < index; i++)
-            //    {
-            //        if (this.employees[i].RecordCreationDate >= dateStart && this.employees[i].RecordCreationDate <= dateEnd) // Если дата создания записи попадает в заданный диапазон
-            //        {
-            //            Console.WriteLine(this.employees[i].Print()); // Выводим массив сотрудников на экран
-            //        }
-            //    }
-            //}
-            //else if (dateStart > dateEnd) // если начальная дата больше конечной даты, выводим сообщение об ошибке
-            //{
-            //    Console.WriteLine("Вы задали некорректный диапазон дат");
-            //}
+            if (dateStart < dateEnd) // Начальная дата должна быть меньше конечной даты диапазона
+            {
+                foreach (var value in _employees)
+                {
+                    if (value.RecordCreationDate >= dateStart && value.RecordCreationDate <= dateEnd) // Если дата создания записи попадает в заданный диапазон
+                    {
+                        Console.WriteLine(value.Print()); // Выводим массив сотрудников на экран
+                    }
+                }
+            }
+            else if (dateStart > dateEnd) // если начальная дата больше конечной даты, выводим сообщение об ошибке
+            {
+                Console.WriteLine("Вы задали некорректный диапазон дат");
+            }
         }
 
         /// <summary>
@@ -324,77 +324,14 @@ namespace HomeworkTheme07ConsoleApp
         /// <summary>
         /// Метод Update(Repository employees) - редактирует заданного сотрудника
         /// </summary>
-        /// <param name="employees">Массив сотрудников для редактирования</param>
-        public void Update(Repository employees)
+        /// <param name="employee"></param>
+        public void Update(Employee employee)
         {
-            //string temp = "";
-            //int noteId = 0;
+            var oldEmployee = _employees
+                .FirstOrDefault(e => e.Id == employee.Id);
 
-            //for (int i = 0; i < this.index; i++)
-            //{
-            //    temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}", // Формируем временную строку в определенном формате из конкретного сотрудника, которого необходимо изменить
-            //                            this.employees[i].Id,
-            //                            this.employees[i].RecordCreationDate,
-            //                            this.employees[i].InitialsEmployee,
-            //                            this.employees[i].Age,
-            //                            this.employees[i].Height,
-            //                            this.employees[i].DateOfBirth,
-            //                            this.employees[i].BirthPlace);
-            //    noteId = this.employees[i].Id; // Сохраняем идентификатор этой записи
-
-            //    if (temp != "") // // Дополнительная проверка на пустоту строки
-            //    {
-            //        Console.WriteLine("Вы выбрали эту запись для редактирования:");
-            //        Console.WriteLine(temp);
-
-            //        string note = string.Empty;
-
-            //        Console.WriteLine("Введите новые значения полей:");
-            //        Console.WriteLine($"\nID записи: {noteId}"); // Идентификатор записи не изменяем, всю остальную информацию редактируем свободно
-            //        note += $"{noteId}" + "#";
-
-            //        Console.WriteLine($"Дата и время добавления записи:");
-            //        note += $"{Console.ReadLine()}" + "#";
-
-            //        Console.WriteLine("Ф. И. О.: ");
-            //        note += $"{Console.ReadLine()}" + "#";
-
-            //        Console.WriteLine("Возраст: ");
-            //        note += $"{Console.ReadLine()}" + "#";
-
-            //        Console.WriteLine("Рост: ");
-            //        note += $"{Console.ReadLine()}" + "#";
-
-            //        Console.WriteLine("Датa рождения: ");
-            //        note += $"{Console.ReadLine()}" + " 00:00" + "#";
-
-            //        Console.WriteLine("Место рождения: ");
-            //        note += $"{Console.ReadLine()}";
-
-            //        using (StreamReader reader = new StreamReader(this.path))
-            //        {
-            //            using (StreamWriter writer = new StreamWriter(@"db_temp.txt")) // Создаем временный файл db_temp.txt для перезаписи массива сотрудников
-            //            {
-            //                string line;
-
-            //                while ((line = reader.ReadLine()) != null)
-            //                {
-            //                    if (String.Equals(line, temp) == true) // Если строка в файле совпадает с той, которую надо изменить
-            //                    {
-            //                        writer.WriteLine(note); // Записываем строку, с измененной информацией о сотруднике во временный файл
-            //                    }
-            //                    else // Если строки не совпают, то перезаписываем их во времененнй файл
-            //                    {
-            //                        writer.WriteLine(line);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        File.Delete(this.path); // Удаляем исходный файл
-            //        File.Move("db_temp.txt", this.path); // Переименовываем временный файл в исходный
-            //        Console.WriteLine("Запись успешно изменена!");
-            //    }
-            //}
+            _employees.Remove(oldEmployee);
+            _employees.Add(employee);
         }
 
         /// <summary>

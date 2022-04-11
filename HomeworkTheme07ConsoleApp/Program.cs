@@ -62,10 +62,8 @@ namespace HomeworkTheme07ConsoleApp
                     int recordIdUpdate = Convert.ToInt32(Console.ReadLine());
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
-                    repUpdate.Update(repUpdate);
-                    Console.ReadKey();
-                    Repository repUpdater = new Repository(path);
-                    //repUpdater.PrintDbToConsole();
+                    //repUpdate.Update();
+                    
                     break;
                 case 5:
                     Console.WriteLine("Введите диапазон дат:");
