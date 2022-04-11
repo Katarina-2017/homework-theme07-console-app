@@ -75,11 +75,11 @@ namespace HomeworkTheme07ConsoleApp
 
             if (dateStart < dateEnd) // Начальная дата должна быть меньше конечной даты диапазона
             {
-                foreach (var value in _employees)
+                foreach (var item in _employees)
                 {
-                    if (value.RecordCreationDate >= dateStart && value.RecordCreationDate <= dateEnd) // Если дата создания записи попадает в заданный диапазон
+                    if (item.RecordCreationDate >= dateStart && item.RecordCreationDate <= dateEnd) 
                     {
-                        Console.WriteLine(value.Print()); // Выводим массив сотрудников на экран
+                        Console.WriteLine(item.Print()); 
                     }
                 }
             }
@@ -102,50 +102,32 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = new List<Employee>();
 
-            //this.GetAll(); // Получаем всех сотрудников
+            _employees = GetEmployeesFromTxt(); // Получаем всех сотрудников
 
-            //switch (userWay)
-            //{
-            //    case 1:
-            //        // сортировка пузырьком
-            //        Employee tmp;
+            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
-            //        for (int i = index - 1; i >= 0; i--)
-            //        {
-            //            for (int j = 0; j < i; j++)
-            //            {
-            //                // сравниваем элементы массива сотрудников по дате и времени создания записи
-            //                if (employees[j].RecordCreationDate > employees[j + 1].RecordCreationDate)
-            //                {
-            //                    tmp = employees[j];
-            //                    employees[j] = employees[j + 1];
-            //                    employees[j + 1] = tmp;
-            //                }
-            //            }
-            //        }
-            //        break;
-            //    case 2:
-            //        // сортировка пузырьком
-            //        Employee itm;
+            switch (userWay)
+            {
+                case 1:
+                    var sortedEmploeyees = _employees.OrderBy(e => e.RecordCreationDate);
+                    
+                    foreach (var item in sortedEmploeyees)
+                    {
+                        Console.WriteLine(item.Print()); 
+                    }
+                    break;
+                case 2:
+                    var sortedEmploeyeesDescending = _employees.OrderByDescending(e => e.RecordCreationDate);
 
-            //        for (int i = index - 1; i >= 0; i--)
-            //        {
-            //            for (int j = 0; j < i; j++)
-            //            {
-            //                // сравниваем элементы массива сотрудников по дате и времени создания записи
-            //                if (employees[j].RecordCreationDate < employees[j + 1].RecordCreationDate)
-            //                {
-            //                    itm = employees[j];
-            //                    employees[j] = employees[j + 1];
-            //                    employees[j + 1] = itm;
-            //                }
-            //            }
-            //        }
-            //        break;
-            //    default:
-            //        Console.WriteLine("Вы ввели некорректное значение");
-            //        break;
-            //}
+                    foreach (var item in sortedEmploeyeesDescending)
+                    {
+                        Console.WriteLine(item.Print()); 
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Вы ввели некорректное значение");
+                    break;
+            }
         }
         #endregion
 
