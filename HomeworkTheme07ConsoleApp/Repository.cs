@@ -50,9 +50,10 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = new List<Employee>();
 
-            _employees = GetEmployeesFromTxt(); 
+            _employees = GetEmployeesFromTxt();
 
             PrintDbToConsole(GetById(idRecord));
+
         }
 
         /// <summary>
@@ -109,20 +110,22 @@ namespace HomeworkTheme07ConsoleApp
             switch (userWay)
             {
                 case 1:
-                    var sortedEmploeyees = _employees.OrderBy(e => e.RecordCreationDate);
+                    var sortedEmploeyees = _employees.OrderBy(e => e.RecordCreationDate).ToList();
                     
                     foreach (var item in sortedEmploeyees)
                     {
                         Console.WriteLine(item.Print()); 
                     }
+                    Save(path, sortedEmploeyees);
                     break;
                 case 2:
-                    var sortedEmploeyeesDescending = _employees.OrderByDescending(e => e.RecordCreationDate);
+                    var sortedEmploeyeesDescending = _employees.OrderByDescending(e => e.RecordCreationDate).ToList();
 
                     foreach (var item in sortedEmploeyeesDescending)
                     {
                         Console.WriteLine(item.Print()); 
                     }
+                    Save(path, sortedEmploeyeesDescending);
                     break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");
@@ -193,6 +196,7 @@ namespace HomeworkTheme07ConsoleApp
                     return employeeNull;
                 }
         }
+
         /// <summary>
         /// Метод GetAll() - получает всех сотрудников
         /// </summary>
@@ -253,7 +257,7 @@ namespace HomeworkTheme07ConsoleApp
                 Console.WriteLine("Продолжить н/д"); key = Console.ReadKey(true).KeyChar;
             } while (char.ToLower(key) == 'н');
 
-            PrintDbToConsole(_employees); // Выводим массив сотрудников на экран
+            PrintDbToConsole(_employees);
 
             Save(this.path, _employees);
         }
@@ -262,45 +266,16 @@ namespace HomeworkTheme07ConsoleApp
         /// Метод Delete(Repository employees) - удаляет заданного сотрудника
         /// </summary>
         /// <param name="employee">Массив сотрудников для удаления</param>
-        public void Delete(Repository employee)
+        public void Delete(Employee employee)
         {
-            //string temp = "";
-            
-            ////bool check = false;
-            //for (int k = 0; k < this.index; k++)
-            //{
-            //    //bool check = false; // Переменная для проверки удаления записи
-            //    temp = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}", // Формируем временную строку в определенном формате из конкретного сотрудника, которого необходимо удалить
-            //                            this.employees[k].Id,
-            //                            this.employees[k].RecordCreationDate,
-            //                            this.employees[k].InitialsEmployee,
-            //                            this.employees[k].Age,
-            //                            this.employees[k].Height,
-            //                            this.employees[k].DateOfBirth.ToShortDateString(),
-            //                            this.employees[k].BirthPlace);
-            //}
-            
-            //if (temp != "") // Дополнительная проверка на пустоту строки
-            //    {
-            //        Console.WriteLine("Вы выбрали эту запись для удаления:");
-            //        Console.WriteLine(temp);
-            //    for (int i = 0; i < this.index; i++)
-            //    {
-            //        if (String.Equals(this.employees[i], temp) == true)
-            //        {
-            //            Console.WriteLine(employees[i].Print());
-            //        }
-            //    }
+            var oldEmployee = _employees
+                .FirstOrDefault(e => e.Id == employee.Id);
 
-                //if (check == true) // Если удаление прошло успешно, то выводим соответствующее сообщение
-                //{
-                //    Console.WriteLine("Запись успешно удалена!");
-                //}
-                //else // Если строки не совпали и удаление не прошло, выводим соответствующее сообщение
-                //{
-                //    Console.WriteLine("Что-то пошло не так...Запись не удалена!");
-                //}
-            //}
+            _employees.Remove(oldEmployee);
+
+            PrintDbToConsole(_employees); // Выводим массив сотрудников на экран
+
+            Save(this.path, _employees);
         }
 
         /// <summary>

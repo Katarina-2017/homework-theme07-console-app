@@ -50,7 +50,7 @@ namespace HomeworkTheme07ConsoleApp
                     int recordIdDelete = Convert.ToInt32(Console.ReadLine());
 
                     Repository repDelete = new Repository(path, recordIdDelete);
-                    repDelete.Delete(repDelete);
+                    //repDelete.Delete();
                     //repDelete.Save(path);
                     //Console.ReadKey();
                     //Repository repDeleter = new Repository(path);
@@ -62,7 +62,8 @@ namespace HomeworkTheme07ConsoleApp
                     int recordIdUpdate = Convert.ToInt32(Console.ReadLine());
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
-                    //repUpdate.Update();
+
+                    //repUpdate.Update(repUpdate);
                     
                     break;
                 case 5:
@@ -81,7 +82,6 @@ namespace HomeworkTheme07ConsoleApp
                     byte userWay = Convert.ToByte(Console.ReadLine());
 
                     Repository repUserSorting = new Repository(path, userWay);
-                    //repUserSorting.PrintDbToConsole();
                     break;
                 default:
                     Console.WriteLine("Вы ввели некорректное значение");
