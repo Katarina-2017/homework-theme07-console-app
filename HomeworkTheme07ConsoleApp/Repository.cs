@@ -32,9 +32,9 @@ namespace HomeworkTheme07ConsoleApp
 
             this.idRecord = 0; // Текущий индентификатор записи
 
-            _employees = new List<Employee>(); // Инициализация массива сотрудников.    | изначально предпологаем, что данных нет
+            _employees = new List<Employee>(); // Инициализация списка сотрудников.    | изначально предпологаем, что данных нет
 
-            _employees = GetEmployeesFromTxt();
+            _employees = GetEmployeesFromTxt(); // Получаем всех сотрудников
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = GetEmployeesFromTxt();
 
-            PrintDbToConsole(GetById(idRecord));
-
+            Console.WriteLine($"{"ID",4}\t{"Датa и время добавления записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+            Console.WriteLine(GetById(idRecord).Print()); // Получаем только одного сотрудника
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = GetEmployeesFromTxt(); // Получаем всех сотрудников
 
-            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+            Console.WriteLine($"{"ID",4}\t{"Датa и время добавления записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
             if (dateStart < dateEnd) // Начальная дата должна быть меньше конечной даты диапазона
             {
@@ -103,28 +103,20 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees = new List<Employee>();
 
-            _employees = GetEmployeesFromTxt(); // Получаем всех сотрудников
-
-            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+            _employees = GetEmployeesFromTxt();
 
             switch (userWay)
             {
                 case 1:
                     var sortedEmploeyees = _employees.OrderBy(e => e.RecordCreationDate).ToList();
-                    
-                    foreach (var item in sortedEmploeyees)
-                    {
-                        Console.WriteLine(item.Print()); 
-                    }
+
+                    PrintDbToConsole(sortedEmploeyees);
                     Save(path, sortedEmploeyees);
                     break;
                 case 2:
                     var sortedEmploeyeesDescending = _employees.OrderByDescending(e => e.RecordCreationDate).ToList();
 
-                    foreach (var item in sortedEmploeyeesDescending)
-                    {
-                        Console.WriteLine(item.Print()); 
-                    }
+                    PrintDbToConsole(sortedEmploeyeesDescending);
                     Save(path, sortedEmploeyeesDescending);
                     break;
                 default:
@@ -204,21 +196,15 @@ namespace HomeworkTheme07ConsoleApp
         {
             return _employees;
         }
+
         /// <summary>
         /// Метод GetById(int idRecord) - получает сотрудника по идентификатору
         /// </summary>
         /// <param name="idRecord">Идентификатор записи</param>
-        public List<Employee> GetById(int idRecord)
+        public Employee GetById(int idRecord)
         {
-            var employee = new List<Employee>();
-
-            foreach (var value in _employees)
-            {
-                if (value.Id == idRecord)
-                {
-                    employee.Add(value);
-                }
-            }
+            var employee = _employees
+                .FirstOrDefault(e => e.Id == idRecord);
             return employee;
         }
 
@@ -228,11 +214,13 @@ namespace HomeworkTheme07ConsoleApp
         public void Create()
         {
             char key = 'д';
-            int noteId = _employees.Count; // Сохраняем количество элементов массива-хранилища
+            _employees = _employees.OrderBy(e => e.Id).ToList();
+
+            int noteId = _employees.Last().Id; // Сохраняем последний Id сотрудника из списка
 
             do
             {
-                noteId++; // Определяем ID новой записи автоматически, исходя из количества элементов в массиве
+                noteId++; // Определяем ID новой записи автоматически, исходя из последнего Id сотрудника в списке
                 Console.WriteLine($"\nID записи: {noteId}");
 
                 string noteDate = DateTime.Now.ToString();
@@ -263,9 +251,9 @@ namespace HomeworkTheme07ConsoleApp
         }
 
         /// <summary>
-        /// Метод Delete(Repository employees) - удаляет заданного сотрудника
+        /// Метод Delete(Employee employee) - удаляет заданного сотрудника
         /// </summary>
-        /// <param name="employee">Массив сотрудников для удаления</param>
+        /// <param name="employee">Сотрудник для удаления</param>
         public void Delete(Employee employee)
         {
             var oldEmployee = _employees
@@ -273,28 +261,55 @@ namespace HomeworkTheme07ConsoleApp
 
             _employees.Remove(oldEmployee);
 
-            PrintDbToConsole(_employees); // Выводим массив сотрудников на экран
+            PrintDbToConsole(_employees);
 
             Save(this.path, _employees);
         }
 
         /// <summary>
-        /// Метод Update(Repository employees) - редактирует заданного сотрудника
+        /// Метод Update(Employee employee) - редактирует заданного сотрудника
         /// </summary>
-        /// <param name="employee"></param>
+        /// <param name="employee">Сотрудник для редактирования</param>
         public void Update(Employee employee)
         {
             var oldEmployee = _employees
                 .FirstOrDefault(e => e.Id == employee.Id);
 
             _employees.Remove(oldEmployee);
-            _employees.Add(employee);
+            Console.WriteLine("Введите новые значения полей:");
+            Console.WriteLine($"\nID записи: {employee.Id}"); // Идентификатор записи не изменяем, всю остальную информацию редактируем свободно
+            int noteId = employee.Id;
+
+            Console.WriteLine($"Дата и время добавления записи:");
+            DateTime noteDateUpdate = Convert.ToDateTime(Console.ReadLine());
+
+            Console.WriteLine("Ф. И. О.: ");
+            string noteFullName = Console.ReadLine();
+
+            Console.WriteLine("Возраст: ");
+            byte noteAge = Convert.ToByte(Console.ReadLine());
+
+            Console.WriteLine("Рост: ");
+            int noteHeight = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Датa рождения: ");
+            DateTime noteDateOfBirth = Convert.ToDateTime(Console.ReadLine());
+
+            Console.WriteLine("Место рождения: ");
+            string noteBirthPlace = Console.ReadLine();
+
+            _employees.Add(new Employee(noteId,noteDateUpdate,noteFullName,noteAge,noteHeight, noteDateOfBirth,noteBirthPlace));
+
+            PrintDbToConsole(_employees); 
+
+            Save(this.path, _employees);
         }
 
         /// <summary>
-        /// Метод Save(string Path) - перезаписывает измененные данные в файл
+        /// Save(string Path, List<Employee> employeeList) - перезаписывает измененные данные в файл
         /// </summary>
-        /// <param name="Path">Путь к файлу с данными</param>
+        /// <param name="Path">Путь к исходному файлу</param>
+        /// <param name="employeeList">Список сотрудников</param>
         public void Save(string Path, List<Employee> employeeList)
         {
             FileInfo userFileName = new FileInfo(path);
@@ -317,11 +332,12 @@ namespace HomeworkTheme07ConsoleApp
         }
 
         /// <summary>
-        /// Метод PrintDbToConsole() - выводит полную информацию о сотруднике на экран
+        /// Метод PrintDbToConsole(List<Employee> employeeList) - выводит полную информацию о сотруднике на экран
         /// </summary>
+        /// <param name="employeeList">Список сотрудников</param>
         public void PrintDbToConsole(List<Employee> employeeList)
         {
-            Console.WriteLine($"{"ID",4}\t{"Датa и время записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+            Console.WriteLine($"{"ID",4}\t{"Датa и время добавления записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
 
             foreach (var employee in employeeList)
             {

@@ -38,7 +38,7 @@ namespace HomeworkTheme07ConsoleApp
                     int recordID = Convert.ToInt32(Console.ReadLine());
 
                     var repView = new Repository(path, recordID);
-                    
+
                     break; 
                 case 2:
                     Repository repCreate = new Repository(path);
@@ -50,21 +50,16 @@ namespace HomeworkTheme07ConsoleApp
                     int recordIdDelete = Convert.ToInt32(Console.ReadLine());
 
                     Repository repDelete = new Repository(path, recordIdDelete);
-                    //repDelete.Delete();
-                    //repDelete.Save(path);
-                    //Console.ReadKey();
-                    //Repository repDeleter = new Repository(path);
-                    
-                    //repDeleter.PrintDbToConsole();
+                    repDelete.Delete(repDelete.GetById(recordIdDelete));
+
                     break;
                 case 4:
                     Console.WriteLine("Введите номер записи, которую надо отредактировать:");
                     int recordIdUpdate = Convert.ToInt32(Console.ReadLine());
 
                     Repository repUpdate = new Repository(path, recordIdUpdate);
+                    repUpdate.Update(repUpdate.GetById(recordIdUpdate));
 
-                    //repUpdate.Update(repUpdate);
-                    
                     break;
                 case 5:
                     Console.WriteLine("Введите диапазон дат:");

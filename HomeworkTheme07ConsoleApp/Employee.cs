@@ -136,7 +136,7 @@ namespace HomeworkTheme07ConsoleApp
         /// <returns></returns>
         public string Print()
         {
-            return $"{Id,4} {RecordCreationDate,22} {InitialsEmployee,29} {Age,10} {Height,9} {DateOfBirth.ToShortDateString(),15} {BirthPlace,25}";
+            return $"{Id,4} {RecordCreationDate,30} {InitialsEmployee,29} {Age,10} {Height,9} {DateOfBirth.ToShortDateString(),15} {BirthPlace,25}";
         }
 
         #endregion
