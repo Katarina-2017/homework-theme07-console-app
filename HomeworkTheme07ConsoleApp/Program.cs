@@ -38,6 +38,7 @@ namespace HomeworkTheme07ConsoleApp
                     int recordID = Convert.ToInt32(Console.ReadLine());
 
                     var repView = new Repository(path, recordID);
+                    repView.GetById(recordID);
 
                     break; 
                 case 2:

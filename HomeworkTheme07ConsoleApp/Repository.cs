@@ -45,15 +45,12 @@ namespace HomeworkTheme07ConsoleApp
         public Repository(string Path, int IdRecord)
         {
             this.path = Path;
-            
+
             this.idRecord = IdRecord;
 
             _employees = new List<Employee>();
 
             _employees = GetEmployeesFromTxt();
-
-            Console.WriteLine($"{"ID",4}\t{"Датa и время добавления записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
-            Console.WriteLine(GetById(idRecord).Print()); // Получаем только одного сотрудника
         }
 
         /// <summary>
@@ -205,6 +202,15 @@ namespace HomeworkTheme07ConsoleApp
         {
             var employee = _employees
                 .FirstOrDefault(e => e.Id == idRecord);
+            if (employee.Id != 0)
+            {
+                Console.WriteLine($"{"ID",4}\t{"Датa и время добавления записи",5}\t{" Ф.И.О.",25}\t{"Возраст",4}\t{"Рост",7}\t{"Датa рождения",15}\t{" Место рождения",25}");
+                Console.WriteLine(employee.Print());
+            }
+            else
+            {
+                Console.WriteLine($"Записи с таким номером {this.idRecord} не найдено");
+            }
             return employee;
         }
 
@@ -274,31 +280,33 @@ namespace HomeworkTheme07ConsoleApp
         {
             var oldEmployee = _employees
                 .FirstOrDefault(e => e.Id == employee.Id);
+            if (employee.Id != 0)
+            {
+                _employees.Remove(oldEmployee);
+                Console.WriteLine("Введите новые значения полей:");
+                Console.WriteLine($"\nID записи: {employee.Id}"); // Идентификатор записи не изменяем, всю остальную информацию редактируем свободно
+                int noteId = employee.Id;
 
-            _employees.Remove(oldEmployee);
-            Console.WriteLine("Введите новые значения полей:");
-            Console.WriteLine($"\nID записи: {employee.Id}"); // Идентификатор записи не изменяем, всю остальную информацию редактируем свободно
-            int noteId = employee.Id;
+                Console.WriteLine($"Дата и время добавления записи:");
+                DateTime noteDateUpdate = Convert.ToDateTime(Console.ReadLine());
 
-            Console.WriteLine($"Дата и время добавления записи:");
-            DateTime noteDateUpdate = Convert.ToDateTime(Console.ReadLine());
+                Console.WriteLine("Ф. И. О.: ");
+                string noteFullName = Console.ReadLine();
 
-            Console.WriteLine("Ф. И. О.: ");
-            string noteFullName = Console.ReadLine();
+                Console.WriteLine("Возраст: ");
+                byte noteAge = Convert.ToByte(Console.ReadLine());
 
-            Console.WriteLine("Возраст: ");
-            byte noteAge = Convert.ToByte(Console.ReadLine());
+                Console.WriteLine("Рост: ");
+                int noteHeight = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Рост: ");
-            int noteHeight = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Датa рождения: ");
+                DateTime noteDateOfBirth = Convert.ToDateTime(Console.ReadLine());
 
-            Console.WriteLine("Датa рождения: ");
-            DateTime noteDateOfBirth = Convert.ToDateTime(Console.ReadLine());
+                Console.WriteLine("Место рождения: ");
+                string noteBirthPlace = Console.ReadLine();
 
-            Console.WriteLine("Место рождения: ");
-            string noteBirthPlace = Console.ReadLine();
-
-            _employees.Add(new Employee(noteId,noteDateUpdate,noteFullName,noteAge,noteHeight, noteDateOfBirth,noteBirthPlace));
+                _employees.Add(new Employee(noteId, noteDateUpdate, noteFullName, noteAge, noteHeight, noteDateOfBirth, noteBirthPlace));
+            }
 
             PrintDbToConsole(_employees); 
 
